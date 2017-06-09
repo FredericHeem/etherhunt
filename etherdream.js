@@ -2,19 +2,20 @@
 const _ = require("lodash");
 const fs = require("fs");
 var Combinatorics = require("js-combinatorics");
+const leftPad = require('left-pad')
 
 function permute(inArray) {
   return inArray.reduce((acc, combination, key) => {
     if (key % 1000 === 0) {
       console.log("permute ", acc.length, combination, combination.length, key);
     }
-    return acc.concat(Combinatorics.permutation(combination).toArray());
+    return acc.concat(Combinatorics.permutationCombination(combination).toArray().filter(item => item.length >= 3));
   }, []);
 }
 
 async function EtherDreamV2() {
   const email = [
-    "maxime.beynet@gmail.com"
+    "maxime.beynet@gmail.com",
     /*"MAXIME.BEYNET@GMAIL.COM",
     "MAXIME;BEYNET@GMAIL;COM"*/
   ];
@@ -82,14 +83,15 @@ async function EtherDreamV2() {
 
   let stream;
   let fileNumber = 0;
-  const itemsPerFile = 10000000;
+  const itemsPerFile = 1000000;
 
   async function getStream(count) {
     if (count >= fileNumber * itemsPerFile) {
       fileNumber++;
-      console.log("create new file ", fileNumber);
+      const fileName = `pw/password-${leftPad(fileNumber, 3, '0')}.txt`;
+      console.log("create new file ", fileName);
       stream && stream.end();
-      stream = await createStream(`password-${fileNumber}.txt`);
+      stream = await createStream(fileName);
     }
     return stream;
   }
@@ -123,4 +125,3 @@ async function EtherDreamV2() {
   console.log("#result ", result[result.length - 1]);
 }
 EtherDreamV2();
-
