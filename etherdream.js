@@ -1,8 +1,35 @@
 #!/usr/bin/env node
+
 const _ = require("lodash");
 const fs = require("fs");
 var Combinatorics = require("js-combinatorics");
 const leftPad = require('left-pad')
+
+const itemsPerFile = 100000;
+
+const email = [
+  "maxime.beynet@gmail.com",
+  /*"MAXIME.BEYNET@GMAIL.COM",
+  "MAXIME;BEYNET@GMAIL;COM"*/
+];
+const ether = ["ET", "ETHER", "ETHEREUM" /*, "Ether", "Ethereum"*/ ];
+const wallet = [
+  "wallet",
+  "WALLET",
+  "Wallet",
+  "wallets",
+  "WALLETS",
+  "Wallets"
+];
+const num = ["2", "02"];
+const pw1 = ["vt88q6s2"];
+const pw2 = ["yp3s532g"];
+const Y = ["Y@"];
+const seps = ["", " ", "-", "_"];
+
+function passwordsBlock(combination) {
+  return Combinatorics.permutationCombination(combination).toArray().filter(item => item.length >= 2).map(item => item.join(""));
+}
 
 function permute(inArray) {
   return inArray.reduce((acc, combination, key) => {
@@ -14,32 +41,12 @@ function permute(inArray) {
 }
 
 async function EtherDreamV2() {
-  const email = [
-    "maxime.beynet@gmail.com",
-    /*"MAXIME.BEYNET@GMAIL.COM",
-    "MAXIME;BEYNET@GMAIL;COM"*/
-  ];
-  const ether = ["ET", "ETHER", "ETHEREUM", "Ether", "Ethereum"];
-  const wallet = [
-    "wallet",
-    "WALLET",
-    "Wallet",
-    "wallets",
-    "WALLETS",
-    "Wallets"
-  ];
-  const num = ["2", "02"];
-  const pw1 = ["vt88q6s2"];
-  const pw2 = ["yp3s532g"];
-  const seps = ["", " ", "-", "_"];
-
   let cp = Combinatorics.cartesianProduct(
     email,
     ether,
     wallet,
     num,
-    pw1,
-    pw2
+    passwordsBlock([pw1, pw2, Y])
   ).toArray();
 
   console.log("cp length: ", cp.length);
@@ -75,7 +82,7 @@ async function EtherDreamV2() {
   async function createStream(name) {
     return new Promise(resolve => {
       var stream = fs.createWriteStream(name);
-      stream.once("open", function(fd) {
+      stream.once("open", function (fd) {
         resolve(stream);
       });
     });
@@ -83,7 +90,7 @@ async function EtherDreamV2() {
 
   let stream;
   let fileNumber = 0;
-  const itemsPerFile = 1000000;
+
 
   async function getStream(count) {
     if (count >= fileNumber * itemsPerFile) {
