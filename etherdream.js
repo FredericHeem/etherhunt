@@ -5,14 +5,14 @@ const fs = require("fs");
 var Combinatorics = require("js-combinatorics");
 const leftPad = require('left-pad')
 
-const itemsPerFile = 100000;
+const itemsPerFile = 1e6;
 
 const email = [
   "maxime.beynet@gmail.com",
   /*"MAXIME.BEYNET@GMAIL.COM",
   "MAXIME;BEYNET@GMAIL;COM"*/
 ];
-const ether = ["ET", "ETHER", "ETHEREUM" /*, "Ether", "Ethereum"*/ ];
+const ether = ["ET", "ETHER", "ETHEREUM", "Ether", "Ethereum"];
 const wallet = [
   "wallet",
   "WALLET",
@@ -21,7 +21,7 @@ const wallet = [
   "WALLETS",
   "Wallets"
 ];
-const num = ["2", "02"];
+const num = ["1", "01"];
 const pw1 = ["vt88q6s2"];
 const pw2 = ["yp3s532g"];
 const Y = ["Y@"];
@@ -40,7 +40,7 @@ function permute(inArray) {
   }, []);
 }
 
-async function EtherDreamV2() {
+async function EtherDream() {
   let cp = Combinatorics.cartesianProduct(
     email,
     ether,
@@ -131,4 +131,4 @@ async function EtherDreamV2() {
   console.log("#result ", result[0]);
   console.log("#result ", result[result.length - 1]);
 }
-EtherDreamV2();
+EtherDream();
