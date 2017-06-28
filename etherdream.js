@@ -103,32 +103,36 @@ async function EtherDream() {
     return stream;
   }
 
-  async function finalCp(results) {
+  function finalCp(results) {
     let itemCount = 0;
     for (let i = 0; i < results.length; i++) {
       const content = Combinatorics.cartesianProduct(...insertSeparator(results[i]))
         .toArray()
         .map(value => value.join(""));
-
+/*
       if (i % 1000 === 0) {
-        console.log("", itemCount, i);
+        console.log("", itemCount, i, results.length, content.length);
         console.log(
           "finalCp",
           content[0]
         );
       }
-      const currentStream = await getStream(itemCount);
-      currentStream.write(content.reduce((acc, item) => acc + item + "\n", ""));
+      */
+      console.log(content.reduce((acc, item) => acc + item + "\n", ""))
+      //const currentStream = await getStream(itemCount);
+      //currentStream.write(content.reduce((acc, item) => acc + item + "\n", ""));
       itemCount += content.length;
     }
+    return itemCount
   }
 
-  await finalCp(result);
-  stream.end();
+  const itemCount = finalCp(result);
+  //stream.end();
 
 
   console.log("#result length ", result.length);
   console.log("#result ", result[0]);
   console.log("#result ", result[result.length - 1]);
+  console.log("#items ", itemCount);
 }
 EtherDream();
