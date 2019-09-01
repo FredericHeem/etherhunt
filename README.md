@@ -3,6 +3,8 @@ Tools to generate a list of passwords for ethereum presale wallets.
 
 # Installation
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/FredericHeem/etherhunt.svg)](https://greenkeeper.io/)
+
 Make sure [node](https://nodejs.org/en/download/) version 8 is installed:
 
     $ node -v
